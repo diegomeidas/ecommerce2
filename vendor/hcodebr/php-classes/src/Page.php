@@ -8,6 +8,8 @@ class Page{
     private $tpl;   //atributo privado para as outras classes não terem acesso
     private $options = [];
     private $defaults = [
+        "header"=>true,
+        "footer"=>true,
         "data"=>[]
     ];
 
@@ -26,7 +28,9 @@ class Page{
         Tpl::configure($config);
         $this->tpl = new Tpl;
         $this->setData($this->options["data"]);
-        $this->tpl->draw("header");
+        //faz a validação de header caso o template não faça uso do mesmo
+        if($this->options["header"] === true)
+            $this->tpl->draw("header");
     }
 
     private function setData($data = array())
@@ -46,7 +50,9 @@ class Page{
 
     public function __destruct()
     {
-        $this->tpl->draw("footer");
+        //faz a validação de footer caso o template não faça uso do mesmo
+        if($this->options["footer"] === true)
+            $this->tpl->draw("footer");
     }
 }
 
